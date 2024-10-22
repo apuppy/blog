@@ -1,0 +1,8 @@
+- [x] 博客标题: Adventures On Earth
+- [x] theme toggle button
+- [x] markdown post管理， markdown文档解决方案
+- [x] 代码展示插件
+- [ ] 链接管理
+- [ ] 每日一句（小说、电影台词、或者其它有意思的话）
+- [ ] 分享博文阅读与评价，twitter，reddit
+- [ ] 访问量，访问来源统计
