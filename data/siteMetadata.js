@@ -2,7 +2,7 @@
 const siteMetadata = {
   title: 'Adventrues On Earth',
   author: 'Kevin Lee',
-  headerTitle: 'Adventrues On Earth',
+  headerTitle: 'Home',
   description: 'A blog about programming,cooking,reading and travel.',
   language: 'en-us',
   theme: 'system', // system, dark or light
