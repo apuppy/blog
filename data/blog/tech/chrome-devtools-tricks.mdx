@@ -7,7 +7,16 @@ layout: PostSimple
 summary: chrome devtools tricks
 ---
 
-## base64 decode
+- [base64 encoding and decoding](#base64-encoding-and-decoding)
+  - [base64 decode](#base64-decode)
+  - [base64 encode](#base64-encode)
+  - [base64 encode and decode example](#base64-encode-and-decode-example)
+  - [work with URL encode/decode](#work-with-url-encodedecode)
+- [references](#references)
+
+## base64 encoding and decoding
+
+### base64 decode
 
 ```javascript
 // atob(): decodes a Base64-encoded string ("atob" should be read as "ASCII to binary").
@@ -15,7 +24,7 @@ summary: chrome devtools tricks
 atob('SGVsbG8gd29ybGQh') > 'Hello world!'
 ```
 
-## base64 encode
+### base64 encode
 
 ```javascript
 // btoa(): creates a Base64-encoded ASCII string from a "string" of binary data ("btoa" should be read as "binary to ASCII").
@@ -23,14 +32,14 @@ atob('SGVsbG8gd29ybGQh') > 'Hello world!'
 btoa('Hello world!') > 'SGVsbG8gd29ybGQh'
 ```
 
-## example
+### base64 encode and decode example
 
 ```javascript
 const encodedData = btoa('Hello, world') // encode a string
 const decodedData = atob(encodedData) // decode the string
 ```
 
-## work with URL encode/decode
+### work with URL encode/decode
 
 ```javascript
 function utf8_to_b64(str) {
@@ -46,6 +55,6 @@ utf8_to_b64('Hello world !') // "SGVsbG8gd29ybGQgIQ=="
 b64_to_utf8('SGVsbG8gd29ybGQgIQ==') // "Hello world !"
 ```
 
-## reference
+## references
 
-[Base64 - MDN Web Docs Glossary: Definitions of Web-related terms | MDN](https://developer.mozilla.org/en-US/docs/Glossary/Base64)
+- [Base64 - MDN Web Docs Glossary: Definitions of Web-related terms | MDN](https://developer.mozilla.org/en-US/docs/Glossary/Base64)
