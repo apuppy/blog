@@ -6,3 +6,107 @@ draft: false
 layout: PostSimple
 summary: The usage of tcpdump
 ---
+
+- 抓取经过网卡eth1、目标或源地址是192.168.1.1的数据
+
+```shell
+tcpdump -i eth1 host 192.168.1.1
+```
+
+- 指定源地址，即指定发送ip
+
+```shell
+tcpdump -i eth1 src host 66.102.251.33 -v
+```
+
+- 指定目标地址，即目的ip
+
+```shell
+tcpdump -i eth1 dst host 66.102.251.33 -v
+```
+
+- 过滤端口
+
+```shell
+tcpdump -i eth1 port 80 -v
+```
+
+- 过滤源端口
+
+```shell
+tcpdump -i eth1 src port 80 -v
+```
+
+- 过滤目标端口
+
+```shell
+tcpdump -i eth1 dst port 80 -v
+```
+
+- 过滤网段
+
+```shell
+tcpdump -i eth1 net 192.168
+tcpdump -i eth1 src net 192.168
+tcpdump -i eth1 dst net 192.168
+```
+
+- 协议过滤
+
+```shell
+tcpdump -i eth1 arp
+tcpdump -i eth1 ip
+tcpdump -i eth1 tcp
+tcpdump -i eth1 udp
+tcpdump -i eth1 icmp
+```
+
+- 常用表达式
+
+  - 非 : ! or "not" (去掉双引号)
+  - 且 : && or "and"
+  - 或 : || or "or"
+
+- 抓取所有经过eth1，目的地址是 66.102.251.33 或 220.181.111.188 ，端口是80的TCP数据
+
+```shell
+tcpdump -i eth1 "((tcp) and (port 80) and ((dst host 66.102.251.33) or (dst host 220.181.111.188) ))" -v
+```
+
+- 抓取所有经过eth1，目标MAC地址是00:01:02:03:04:05的ICMP数据
+
+```shell
+tcpdump -i eth1 '((icmp) and ((ether dst host 00:01:02:03:04:05)))'
+```
+
+- 抓取所有经过eth1，目的网络是192.168，但目的主机不是192.168.1.200的TCP数据
+
+```shell
+tcpdump -i eth1 '((tcp) and ((dst net 192.168) and (not dst host 192.168.1.200)))'
+```
+
+- 把监听内容写入文件
+
+```shell
+tcpdump -i eth1 port 80 -w tcpdump.log
+```
+
+- mysq执行语句
+
+```shell
+tcpdump -i eth1 -s 0 -l -w - dst  port 3306 | strings
+# or
+sudo tcpdump -i any -s 0 -l -w - dst port 3306 | strings
+```
+
+- 抓取elasticsearch流经9200端口的数据
+
+```shell
+tcpdump -A -i lo tcp port 9200
+```
+
+- HTTP协议请求及返回
+
+```shell
+tcpdump -A -s 0 'tcp port 80 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)'
+```
