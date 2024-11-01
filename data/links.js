@@ -80,10 +80,6 @@ const links = [
         url: 'https://www.bloomberg.com/',
       },
       {
-        name: 'cnBeta',
-        url: 'http://www.cnbeta.com/',
-      },
-      {
         name: 'HuffPost',
         url: 'https://www.huffpost.com/',
       },
