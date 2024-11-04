@@ -6,3 +6,150 @@ draft: false
 layout: PostSimple
 summary: The basics of strace
 ---
+
+- [常用参数](#常用参数)
+- [示例](#示例)
+  - [直接运行，不带参数](#直接运行，不带参数)
+  - [指定pid](#指定pid)
+  - [以指定的用户身份运行被跟踪的命令](#以指定的用户身份运行被跟踪的命令)
+  - [获取运行时间](#获取运行时间)
+  - [统计所跟踪的调用](#统计所跟踪的调用)
+  - [使用表达式过滤](#使用表达式过滤)
+  - [将跟踪到的调用输出到文件中](#将跟踪到的调用输出到文件中)
+  - [打印第个系统调用的执行时间](#打印第个系统调用的执行时间)
+  - [仅跟踪对指定定路径资源的系统调用](#仅跟踪对指定定路径资源的系统调用)
+- [参考](#参考)
+
+## 常用参数
+
+- -c 统计每个系统调用的用时，次数和出错次数等
+- -f 跟踪由fork调用所创建的子进程
+- -ff 如果同时提供-o filename,则所有进程的跟踪信息输出到相应的filename.pid中,pid是各进程的进程号
+- -r 在进入每个系统调用前打印相对时间，它记录了连续相邻系统调用之间的时间差
+- -t 在每行跟踪记录前面加上当前格式化时间，秒级
+- -tt 在每行跟踪记录前面加上当前格式化时间，并微秒级
+- -ttt 在每行跟踪记录前面加上当前时间戳，并微秒级
+- -T 记录了系统调用开始与结束时的时间差，默认单位为微秒。注意展示在每行末尾
+- -e expr 指定表达式，形式如：[qualifier=][!]value[,value]...
+- -e trace=open 只跟踪指定的系统调用，如`strace -e trace=open,close,read,write`
+- -e trace=%file 只跟踪与文件操作相关的系统调用
+- -e trace=%process 只跟踪与进程控制相关的系统调用
+- -e trace=%network 只跟踪与网络相关的系统调用
+- -e trace=%signal 只跟踪与信号相关的系统调用
+- -o filename 将跟踪的输出写入文件到文件`filename`
+- -p pid 跟踪指定的进程pid
+- -u 以指定的用户身份运行被跟踪的命令
+
+## 示例
+
+### 直接运行，不带参数
+
+```shell
+strace ls
+```
+
+### 指定pid
+
+```shell
+# 起一个进程
+sh -c 'echo $$; exec sleep 60'
+3088334
+
+# 以刚起的进程pid为参数，跟踪其调用
+strace -p 3088334
+```
+
+### 以指定的用户身份运行被跟踪的命令
+
+```shell
+strace -u www-data whoami
+```
+
+### 获取运行时间
+
+```shell
+$ strace -t ls
+05:23:12 execve("/usr/bin/ls", ["ls"], 0x7ffc8972ffd8 /* 32 vars */) = 0
+05:23:12 brk(NULL)                      = 0x55d770700000
+-TRUNCATED-
+
+$ strace -tt ls
+05:24:31.745424 execve("/usr/bin/ls", ["ls"], 0x7fff6c8d5188 /* 32 vars */) = 0
+05:24:31.745810 brk(NULL)               = 0x55ecb5d36000
+-TRUNCATED-
+
+$ strace -T ls
+execve("/usr/bin/ls", ["ls"], 0x7fff24c3a298 /* 32 vars */) = 0 <0.000286>
+brk(NULL)                               = 0x55ad80a30000 <0.000008>
+access("/etc/ld.so.preload", R_OK)      = -1 ENOENT (No such file or directory) <0.000011>
+-TRUNCATED-
+```
+
+### 统计所跟踪的调用
+
+```shell
+$ strace -c ls > /dev/null
+% time     seconds  usecs/call     calls    errors syscall
+------ ----------- ----------- --------- --------- ----------------
+  0.00    0.000000           0         7           read
+  0.00    0.000000           0         3           write
+  0.00    0.000000           0        11           close
+  -TRUNCATED-
+  0.00    0.000000           0         1           prlimit64
+------ ----------- ----------- --------- --------- ----------------
+100.00    0.000000           0        94         4 total
+```
+
+### 使用表达式过滤
+
+#### 以系统调用名过滤
+
+```shell
+strace -e trace=fstat ls
+```
+
+#### 以系统调用类型集合过滤
+
+```shell
+$ strace -e trace=%network curl https://www.google.com
+socket(AF_INET6, SOCK_DGRAM, IPPROTO_IP) = 3
+socketpair(AF_UNIX, SOCK_STREAM, 0, [3, 4]) = 0
+socketpair(AF_UNIX, SOCK_STREAM, 0, [5, 6]) = 0
+socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP) = 5
+-TRUNCATED-
+```
+
+#### 以返回状态过滤
+
+```shell
+strace -e status=unfinished,unavailable whoami
+```
+
+### 将跟踪到的调用输出到文件中
+
+```shell
+strace -o ls-trace.txt ls
+```
+
+### 打印第个系统调用的执行时间
+
+```shell
+strace -r ls
+# 比起-T，-r在视觉上更直观一些
+```
+
+### 仅跟踪对指定定路径资源的系统调用
+
+```shell
+$ strace -P /etc/ld.so.cache ls /var/empty
+openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+fstat(3, {st_mode=S_IFREG|0644, st_size=27770, ...}) = 0
+mmap(NULL, 27770, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7fb40161b000
+close(3)                                = 0
+ls: cannot access '/var/empty': No such file or directory
++++ exited with 2 +++
+```
+
+## 参考
+
+- [strace](https://strace.io/)
