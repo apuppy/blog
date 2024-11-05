@@ -7,40 +7,55 @@ layout: PostSimple
 summary: command line trick
 ---
 
-## 示例
+    - [导入自定义shell](#导入自定义shell)
+    - [在命令行使用代理](#在命令行使用代理)
+    - [杀掉包含指定名称的所有进程](#杀掉包含指定名称的所有进程)
 
 ### 导入自定义shell
 
 ```shell
-# 放编辑~/.bashrc或~/.zshrc
+# 编辑~/.bashrc或~/.zshrc
 [ -f $HOME/code/demo/work-private/shell/func.sh ] && source $HOME/code/demo/work-private/shell/func.sh
 ```
 
-### 代理的快捷命令
+### 在命令行使用代理
 
-#### 设置代理的快捷方式
+#### 设置代理的别名
 
 ```shell
 # $HOME/code/demo/work-private/shell/func.sh文件内容的一部分
 
 ############################## proxy settings ##############################
-# GFW proxy
+
+# 协议类型可以改，如socks5, http
 # PROXY_PROTOCOL=socks5
 PROXY_PROTOCOL=http
+
+# 代理端口号,看你相应软件(如clash for windows, clashX, Surge等)提供的代理端口
 # PROXY_PORT=7890
 # PROXY_PORT=6152
 PROXY_PORT=8234
+
+# 如果只是本机使用则设置LOCAL_PROXY
 LOCAL_PROXY="$PROXY_PROTOCOL://127.0.0.1:$PROXY_PORT"
-LAN_PROXY="$PROXY_PROTOCOL://192.168.10.128:$PROXY_PORT"
-# PROXY=$LAN_PROXY
+
+# 如果是局域网内其它机器提供的代理服务，使用则设置LAN_PROXY
+# LAN_PROXY="$PROXY_PROTOCOL://192.168.10.128:$PROXY_PORT"
+
+# 选择使用哪个代理，本机的：LOCAL_PROXY, 局域网内其它机器提供的: LAN_PROXY
 PROXY=$LOCAL_PROXY
+# PROXY=$LAN_PROXY
+
+# alias是任意的，取自己觉得合适的别名即可
 alias host-proxy-on="export HTTP_PROXY=$PROXY; export HTTPS_PROXY=$PROXY; export ALL_PROXY=$PROXY; export http_proxy=$PROXY; export https_proxy=$PROXY;"
-# debug proxy
+# debug proxy, 调试代理，如mitmproxy, charles等
 DEBUG_PROXY="http://127.0.0.1:8080"
 alias debug-proxy-on="export HTTP_PROXY=$DEBUG_PROXY; export HTTPS_PROXY=$DEBUG_PROXY; export ALL_PROXY=$DEBUG_PROXY; export http_proxy=$DEBUG_PROXY; export https_proxy=$DEBUG_PROXY;"
-# unset proxy settings
+
+# 取消命令行下的代理环境变量
 alias proxy-off="unset HTTP_PROXY; unset http_proxy; unset HTTPS_PROXY; unset https_proxy; unset ALL_PROXY"
-# for kubernetes ip
+
+# 设置不走代理的ip或者网段
 export NO_PROXY=localhost,127.0.0.1,192.168.0.0/16,10.96.0.0/12,192.168.59.0/24,192.168.49.0/24,192.168.39.0/24
 ```
 
@@ -61,4 +76,14 @@ $ curl https://www.google.com
 $ proxy-off
 $ echo $http_proxy
 > (空)
+```
+
+### 杀掉包含指定名称的所有进程
+
+```shell
+# 如杀掉进程名中包含"vscode"的进程
+kill -9 $(ps aux | grep vscode | awk '{ print $2 }' | tr "\n" " ")
+
+# 杀掉safari进程
+ps aux | grep -i safari | grep -v grep | awk '{ print $2 }' | xargs kill -9
 ```
