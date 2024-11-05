@@ -1,0 +1,64 @@
+---
+title: command line tricks
+date: '2024-11-05'
+tags: ['编程', 'shell']
+draft: false
+layout: PostSimple
+summary: command line trick
+---
+
+## 示例
+
+### 导入自定义shell
+
+```shell
+# 放编辑~/.bashrc或~/.zshrc
+[ -f $HOME/code/demo/work-private/shell/func.sh ] && source $HOME/code/demo/work-private/shell/func.sh
+```
+
+### 代理的快捷命令
+
+#### 设置代理的快捷方式
+
+```shell
+# $HOME/code/demo/work-private/shell/func.sh文件内容的一部分
+
+############################## proxy settings ##############################
+# GFW proxy
+# PROXY_PROTOCOL=socks5
+PROXY_PROTOCOL=http
+# PROXY_PORT=7890
+# PROXY_PORT=6152
+PROXY_PORT=8234
+LOCAL_PROXY="$PROXY_PROTOCOL://127.0.0.1:$PROXY_PORT"
+LAN_PROXY="$PROXY_PROTOCOL://192.168.10.128:$PROXY_PORT"
+# PROXY=$LAN_PROXY
+PROXY=$LOCAL_PROXY
+alias host-proxy-on="export HTTP_PROXY=$PROXY; export HTTPS_PROXY=$PROXY; export ALL_PROXY=$PROXY; export http_proxy=$PROXY; export https_proxy=$PROXY;"
+# debug proxy
+DEBUG_PROXY="http://127.0.0.1:8080"
+alias debug-proxy-on="export HTTP_PROXY=$DEBUG_PROXY; export HTTPS_PROXY=$DEBUG_PROXY; export ALL_PROXY=$DEBUG_PROXY; export http_proxy=$DEBUG_PROXY; export https_proxy=$DEBUG_PROXY;"
+# unset proxy settings
+alias proxy-off="unset HTTP_PROXY; unset http_proxy; unset HTTPS_PROXY; unset https_proxy; unset ALL_PROXY"
+# for kubernetes ip
+export NO_PROXY=localhost,127.0.0.1,192.168.0.0/16,10.96.0.0/12,192.168.59.0/24,192.168.49.0/24,192.168.39.0/24
+```
+
+#### 使用代理
+
+```shell
+# 默认情况下，命令行里没有代理环境变更http_proxy, https_proxy
+$ echo $http_proxy
+> (空)
+
+# 开启代理，设置环境变量http_proxy, https_proxy等
+$ host-proxy-on
+$ echo $http_proxy
+> http://127.0.0.1:8234
+$ curl https://www.google.com
+
+# 关于代理环境变量
+$ proxy-off
+$ echo $http_proxy
+> (空)
+```
