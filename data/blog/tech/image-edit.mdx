@@ -1,0 +1,127 @@
+---
+title: 图片压缩与转换
+date: '2024-10-31'
+tags: ['编程']
+draft: false
+layout: PostSimple
+summary: 在博客中引入图床、优化图片存储空间的过程中关于图片压缩与转换的一些记录
+---
+
+- [imagemagick](#imagemagick)
+  - [安装](#安装)
+  - [使用](#使用)
+- [jpegoptim](#jpegoptim)
+  - [安装](#安装)
+  - [使用](#使用)
+- [optipng](#optipng)
+  - [安装](#安装)
+  - [使用](#使用)
+- [pngquant](#pngquant)
+  - [安装](#安装)
+  - [使用](#使用)
+- [zopfli](#zopfli)
+  - [安装](#安装)
+  - [使用](#使用)
+- [扩展](#扩展)
+- [参考](#参考)
+
+## imagemagick
+
+### 安装
+
+```shell
+# 安装
+brew install imagemagick
+# 查看版本信息
+magick --version
+```
+
+### 使用
+
+#### 转换格式
+
+```shell
+magick winter-9168397_1920.jpg winter-9168397_1920.png
+```
+
+#### 清除图片的元信息
+
+```shell
+magick CEA8FD30.jpeg -strip CEA8FD30-strip.jpeg
+```
+
+## jpegoptim
+
+### 安装
+
+```shell
+# 安装
+brew install jpegoptim
+# manual
+man jpegoptim
+```
+
+### 使用
+
+```shell
+# 在图床仓库中压缩以往占用空间较大的原图，限制在300k以内
+jpegoptim --size=300k blog*.jpeg
+```
+
+## optipng
+
+### 安装
+
+```shell
+# 安装
+brew install optipng
+# manual
+man optipng
+```
+
+### 使用
+
+```shell
+optipng IMG_0344.PNG
+```
+
+## pngquant
+
+### 安装
+
+```shell
+brew install pngquant
+```
+
+### 使用
+
+```shell
+# 压缩并去除图片中的元数据
+pngquant --speed 1 --strip --verbose winter.png -o winter-slim.png
+```
+
+## zopfli
+
+### 安装
+
+```shell
+brew install zopfli
+```
+
+### 使用
+
+```shell
+zopflipng  winter-slim.png winter-slim-x.png
+```
+
+## 扩展
+
+- 图片元信息
+  > [!NOTE]
+  > 图片元信息: 图片的元信息是嵌入图像文件中的附加数据，描述拍摄设置、版权、位置、编辑历史等信息。
+
+## 参考
+
+- [ImageMagick – Mastering Digital Image Alchemy](https://imagemagick.org/)
+- [提高博客加载速度：PNG 图片压缩 – 理头张的博客](https://www.littlezhang.com/2022/01/%E6%8F%90%E9%AB%98%E5%8D%9A%E5%AE%A2%E5%8A%A0%E8%BD%BD%E9%80%9F%E5%BA%A6png-%E5%9B%BE%E7%89%87%E5%8E%8B%E7%BC%A9/)
+- [How to Optimize and Compress JPEG or PNG Images in Linux Commandline](https://www.tecmint.com/optimize-and-compress-jpeg-or-png-batch-images-linux-commandline/)
