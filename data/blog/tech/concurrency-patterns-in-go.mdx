@@ -7,35 +7,41 @@ layout: PostSimple
 summary: frequently-used concurrency patterns in golang
 ---
 
-- [what is concurrency patterns](#what-is-concurrency-patterns)
-- [frequently-used concurrency patterns in golang](#frequently-used-concurrency-patterns-in-golang)
-- [concurrency patterns examples](#concurrency-patterns-examples)
-  - [worker pool](#worker-pool)
-  - [pipeline](#pipeline)
-  - [fan-in](#fan-in)
-  - [semephore](#semephore)
-  - [timeout](#timeout)
-  - [or-done](#or-done)
-- [references](#references)
+- [什么是并发模式](#什么是并发模式)
+- [并发模式示例](#并发模式示例)
+  - [工作池模式](#工作池模式)
+  - [管道模式](#管道模式)
+  - [扇入/扇出模式](#扇入扇出模式)
+  - [信号量模式](#信号量模式)
+  - [截止时间和超时模式](#截止时间和超时模式)
+- [参考](#参考)
 
-## what is concurrency patterns
+## 什么是并发模式
 
-## frequently-used concurrency patterns in golang
+并发模式是指一系列用于处理多个任务同时执行的设计策略。它们帮助开发者有效地管理协程操作，避免资源冲突，提高系统的性能和响应能力。常见的并发模式包括：
 
-## concurrency patterns examples
+- 工作池模式
+- 生产者/消费者模式
+- 管道模式
+- 发布/订阅模式
+- 扇入/扇出模式
+- 互斥锁模式
+- 信号量模式
 
-### worker pool
+## 并发模式示例
 
-### pipeline
+### 工作池模式
 
-### fan-in
+- [Go语言的并发模式之worker pool模式](/blog/tech/con-pattern-worker-pool)
 
-### semephore
+### 管道模式
 
-### timeout
+### 扇入/扇出模式
 
-### or-done
+### 信号量模式
 
-## references
+### 截止时间和超时模式
+
+## 参考
 
 - [Go Concurrency Patterns](https://go.dev/talks/2012/concurrency.slide#1)
