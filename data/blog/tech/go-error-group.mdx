@@ -91,7 +91,7 @@ import (
 func ErrGroupWithCancel() {
 	g, ctx := errgroup.WithContext(context.Background())
 	input := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
-	g.SetLimit(20)
+	g.SetLimit(10)
 	//g.SetLimit(100) // If you set the limit to 100, seems that the context canceling does not work.
 
 	g.Go(func() error {
@@ -100,7 +100,7 @@ func ErrGroupWithCancel() {
 				g.Go(func() error {
 					select {
 					case <-ctx.Done():
-						fmt.Printf("Canceling, goroutine cancel, number: %d\n", n)
+						fmt.Printf("Canceling, goroutine cancel, number: %d, err: %s.\n", n, ctx.Err())
 						return nil
 					default:
 						// simulation error occurred here
