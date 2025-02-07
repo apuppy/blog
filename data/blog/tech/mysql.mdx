@@ -2,7 +2,82 @@
 title: MySQL笔记
 date: '2024-10-01'
 tags: ['编程', '数据库']
-draft: false
+draft: true
 layout: PostSimple
 summary: MySQL笔记
 ---
+
+- [常用命令](#常用命令)
+  - [在docker上使用MySQL](#在docker上使用mysql)
+- [MySQL的构成](#mysql的构成)
+  - [客户端](#客户端)
+  - [Server层](#server层)
+  - [存储引擎层](#存储引擎层)
+- [常见问题](#常见问题)
+  - [什么是redolog与binlog](#什么是redolog与binlog)
+  - [有哪些类型的索引](#有哪些类型的索引)
+  - [衡量索引区分度](#衡量索引区分度)
+  - [隐式转换](#隐式转换)
+  - [索引的最左前缀原则](#索引的最左前缀原则)
+  - [索引中的覆盖索引](#索引中的覆盖索引)
+  - [死锁](#死锁)
+- [学习资料](#学习资料)
+
+## 常用命令
+
+### 在docker上使用MySQL
+
+```shell
+# 运行一个版本为8.0.40，操作系统基于debian的MySQL实例
+docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=123456 -d mysql:8.0.40-debian
+
+# 启动MySQL实例
+docker start some-mysql
+
+# 进入MySQL交互式命令行
+docker exec -it some-mysql mysql -uroot -p
+```
+
+## MySQL的构成
+
+### 客户端
+
+各编程语文的mysql客户端，如PHP的PDO for MySQL, python的pymsql等
+
+### Server层
+
+1. 连接器
+2. 分析器
+3. 优化器
+4. 执行器
+
+### 存储引擎层
+
+- InnoDB(当下提到MySQL，默认大多数时候都是指InnoDB)
+- MyISAM(很少使用)
+
+## 常见问题
+
+### 什么是redolog与binlog
+
+### 有哪些类型的索引
+
+- 唯一索引
+- 联合索引
+
+### 衡量索引区分度
+
+### 隐式转换
+
+- [18 | 为什么这些SQL语句逻辑相同，性能却差异巨大？-MySQL 实战 45 讲-极客时间](https://time.geekbang.org/column/article/74059)
+- [浅析 MySQL 的隐式转换 | 小米信息部技术团队](https://xiaomi-info.github.io/2019/12/24/mysql-implicit-conversion/)
+
+### 索引的最左前缀原则
+
+### 索引中的覆盖索引
+
+### 死锁
+
+## 学习资料
+
+- [MySQL 实战 45 讲](https://time.geekbang.org/column/intro/100020801?tab=catalog)
