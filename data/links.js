@@ -477,7 +477,7 @@ const links = [
         url: 'https://betterexplained.com/cheatsheet/',
       },
       {
-        name: 'The Feynman Lectures',
+        name: 'The Feynman Physics Lectures',
         url: 'https://www.feynmanlectures.caltech.edu/I_toc.html',
       },
       {
