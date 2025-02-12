@@ -113,6 +113,7 @@ $$
 - 当MySQL需要将索引列的值进行类型转换时，索引通常会失效，因为索引是**基于原始数据类型**的。
 - 在MySQL中，字符串和数字做比较的话，是将字符串转换成数字。
 - 隐式类型转换可能导致无法使用索引、查询结果不准确等。
+- 例子：假如bill表里有个索引字段为`order_no char(32)`，写的SQL语句是`SELECT * FROM bill WHERE order_no=20250212000001;`, 但是实际上MySQL内部经优化器处理后执行的实际SQL可能为`SELECT * FROM bill WHERE CAST(order_no AS signed int)=20250212000001`
 
 ### 索引的最左前缀原则
 
