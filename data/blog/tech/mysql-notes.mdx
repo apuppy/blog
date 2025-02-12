@@ -1,0 +1,119 @@
+---
+title: MySQL笔记
+date: '2024-10-01'
+tags: ['编程', '数据库']
+draft: true
+layout: PostSimple
+summary: MySQL笔记
+---
+
+- [常用命令](#常用命令)
+  - [在docker上使用MySQL](#在docker上使用mysql)
+- [MySQL的构成](#mysql的构成)
+  - [客户端](#客户端)
+  - [Server层](#server层)
+  - [存储引擎层](#存储引擎层)
+- [常见问题](#常见问题)
+  - [什么是redo log与binlog](#什么是redo-log与binlog)
+  - [选择唯一索引还是普通索引](#选择唯一索引还是普通索引)
+  - [衡量索引区分度](#衡量索引区分度)
+  - [隐式转换](#隐式转换)
+  - [索引的最左前缀原则](#索引的最左前缀原则)
+  - [索引中的覆盖索引](#索引中的覆盖索引)
+  - [死锁](#死锁)
+- [学习资料](#学习资料)
+
+## 常用命令
+
+### 在docker上使用MySQL
+
+```shell
+# 运行一个版本为8.0.40，操作系统基于debian的MySQL实例
+docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=123456 -d mysql:8.0.40-debian
+
+# 启动MySQL实例
+docker start some-mysql
+
+# 进入MySQL交互式命令行
+docker exec -it some-mysql mysql -uroot -p
+```
+
+## MySQL的构成
+
+### 客户端
+
+各编程语文的mysql客户端，如PHP的PDO for MySQL, python的pymsql等
+
+### Server层
+
+1. 连接器
+2. 分析器
+3. 优化器
+4. 执行器
+
+### 存储引擎层
+
+- InnoDB(当下提到MySQL，默认大多数时候都是指InnoDB)
+- MyISAM(很少使用)
+
+## 常见问题
+
+### 什么是redo log与binlog
+
+#### redo log
+
+在极客时间的《MySQL实战45讲》课程中作者提到鲁讯先生的文章《孔乙己》里酒店掌柜的粉板，把redolog比作粉板，是个比较形象的比方。
+
+> 酒店掌柜有一个粉板，专门用来记录客人的赊账记录。如果赊账的人不多，那么他可以把顾客名和账目写在粉板上。但如果赊账的人多了，粉板总会有记不下的时候，这个时候掌柜一定还有一个专门记录赊账的账本
+
+- 由**InnoDB存储引擎**维护，是记录**数据变更情况**的落盘的日志。
+- 主要用于崩溃恢复。
+- 采用**WAL** （Write-Ahead Logging)机制,先写redo log日志,再写数据到磁盘。
+
+#### binlog
+
+- binlog由**MySQL Server**层维护,与**存储引擎无关**(适用于所有存储引擎，如InnoDB, MyISAM)。
+- 主要用于**主从复制（Replication）**和**数据恢复（Point-in-Time Recovery，PITR）**。
+- 记录的是SQL语句（DML、DDL）,不会记录对数据变更无影响的SELECT语句
+
+### 选择唯一索引还是普通索引
+
+#### 引出change buffer
+
+##### 认识change buffer
+
+当需要更新一个数据页时，如果数据页在内存中就直接更新，而如果这个数据页还没有在内存中的话，在不影响数据一致性的前提下，InnoDB 会将这些更新操作缓存在change buffer中，这样就不需要从磁盘中读入这个数据页了。在下次查询需要访问这个数据页的时候，将数据页读入内存，然后执行change buffer中与这个页有关的操作。
+
+##### change buffer要点
+
+- **merge**: 将change buffer中的操作应用到原数据页，得到最新结果的过程称为merge。除了访问这个数据页会触发 merge外，系统有后台线程会定期merge。在数据库正常关闭（shutdown）的过程中，也会执行merge操作。
+- **目的**： change buffer的主要目的就是将记录的变更动作缓存下来，所以在一个数据页做merge之前，change buffer记录的变更越多（也就是这个页面上要更新的次数越多），收益就越大。
+- **注意**: 唯一索引无法使用change buffer，原因是为了确保数据的完整性和唯一性约束，每次写入操作都需要立即更新索引页，而change buffer是为了延迟更新而设计的。
+
+#### 结论
+
+由于唯一索引用不上change buffer的优化机制，如果业务可以接受，从性能角度出发应该**优先考虑非唯一索引**。在强烈需要数据库保证表中某一列的值不能重复的情形下，该用就用。
+
+### 衡量索引区分度
+
+### 隐式转换
+
+- [18 | 为什么这些SQL语句逻辑相同，性能却差异巨大？-MySQL 实战 45 讲-极客时间](https://time.geekbang.org/column/article/74059)
+- [浅析 MySQL 的隐式转换 | 小米信息部技术团队](https://xiaomi-info.github.io/2019/12/24/mysql-implicit-conversion/)
+
+### 索引的最左前缀原则
+
+### 索引中的覆盖索引
+
+### 死锁
+
+#### 什么是死锁
+
+- 对同一组资源(数据表)，要按照尽量相同的顺序访问
+
+#### 如何应对死锁
+
+## 学习资料
+
+- [MySQL 实战 45 讲](https://time.geekbang.org/column/intro/100020801?tab=catalog)
+- [MySQL Glossary](https://dev.mysql.com/doc/refman/8.4/en/glossary.html)
