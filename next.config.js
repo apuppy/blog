@@ -82,6 +82,11 @@ module.exports = () => {
           hostname: 'raw.githubusercontent.com',
           pathname: '/apuppy/static/main/**',
         },
+        {
+          protocol: 'https',
+          hostname: 'media.zootechs.com',
+          pathname: '/**',
+        },
       ],
       unoptimized,
     },
