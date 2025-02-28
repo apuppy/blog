@@ -13,12 +13,12 @@ export default function Page() {
             <h3 className="md-2 mt-4 text-2xl">{linkgrp.category}</h3>
             <ul key={linkgrp.category}>
               {linkgrp.links.map((lnk) => (
-                <li key={lnk.name}>
+                <li className="mt-2" key={lnk.name}>
                   <Link
                     key={lnk.name}
                     href={lnk.url}
                     target="_blank"
-                    className="mb-4 py-2 pr-4 text-gray-900 hover:text-primary-500 dark:text-gray-100 dark:hover:text-primary-400"
+                    className="py-2 pr-4 text-gray-900 hover:text-primary-500 dark:text-gray-100 dark:hover:text-primary-400"
                   >
                     {lnk.name}
                   </Link>
