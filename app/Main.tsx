@@ -6,17 +6,16 @@ import NewsletterForm from 'pliny/ui/NewsletterForm'
 
 const MAX_DISPLAY = 5
 
-export default function Home({ posts, sentence }) {
-  console.log(sentence)
+export default function Home({ posts }) {
   return (
     <>
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        <div className="space-y-2 pb-8 pt-6 md:space-y-5">
+        {/* <div className="space-y-2 pb-8 pt-6 md:space-y-5">
           <blockquote className="my-4 rounded-sm border-l-4 border-primary-500 p-6 text-lg leading-7 text-gray-700 dark:border-primary-400  dark:text-gray-300">
             <p className="text-xl font-medium">{sentence.words}</p>
             <footer className="text-md mt-2"> — {sentence.author}</footer>
           </blockquote>
-        </div>
+        </div> */}
         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
           {!posts.length && 'No posts found.'}
           {posts.slice(0, MAX_DISPLAY).map((post) => {
