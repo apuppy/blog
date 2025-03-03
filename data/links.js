@@ -1,25 +1,25 @@
 const links = [
-  {
-    category: 'Ongoing',
-    links: [
-      {
-        name: 'work-nav-links',
-        url: 'https://work.zootechs.com/',
-      },
-      {
-        name: '2023-tech-schedule',
-        url: 'https://dida365.com/webapp/#p/5fe2df9586da912052ea9847/tasks/63df68cbaaaef0270e1e07c0',
-      },
-      {
-        name: 'notion-daily',
-        url: 'https://www.notion.so/daily-8813d1c8a0e04085bc51ed3205e5f6fc',
-      },
-      {
-        name: '滴答清单-work',
-        url: 'https://dida365.com/webapp/#p/e1134c90b27575dc7f84ab0e/tasks',
-      },
-    ],
-  },
+  // {
+  //   category: 'Ongoing',
+  //   links: [
+  //     {
+  //       name: 'work-nav-links',
+  //       url: 'https://work.zootechs.com/',
+  //     },
+  //     {
+  //       name: '2023-tech-schedule',
+  //       url: 'https://dida365.com/webapp/#p/5fe2df9586da912052ea9847/tasks/63df68cbaaaef0270e1e07c0',
+  //     },
+  //     {
+  //       name: 'notion-daily',
+  //       url: 'https://www.notion.so/daily-8813d1c8a0e04085bc51ed3205e5f6fc',
+  //     },
+  //     {
+  //       name: '滴答清单-work',
+  //       url: 'https://dida365.com/webapp/#p/e1134c90b27575dc7f84ab0e/tasks',
+  //     },
+  //   ],
+  // },
   {
     category: 'News',
     links: [
