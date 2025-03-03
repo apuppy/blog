@@ -8,7 +8,7 @@ import Link from 'next/link'
 export const metadata = genPageMetadata({ title: 'About-En' })
 
 export default function Page() {
-  const author = allAuthors.find((p) => p.slug === 'default') as Authors
+  const author = allAuthors.find((p) => p.slug === 'default-en') as Authors
   const mainContent = coreContent(author)
 
   return (
