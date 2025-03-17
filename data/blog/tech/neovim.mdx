@@ -1,5 +1,5 @@
 ---
-title: neovim
+title: 懒人的neovim的配置笔记
 date: '2022-11-02'
 tags: ['编程']
 draft: false
@@ -7,34 +7,81 @@ layout: PostSimple
 summary: The configuration of neovim
 ---
 
-- [install](#install)
+- [安装neovim](#安装neovim)
 - [配置](#配置)
-  - [配置文件](#配置文件)
+  - [拉取配置仓库](#拉取配置仓库)
+  - [首次运行安装](#首次运行安装)
+  - [使用tokyonight黑色主题时的坑](#使用tokyonight黑色主题时的坑)
+  - [github copilot](#github-copilot)
+- [使用](#使用)
   - [常用快捷键](#常用快捷键)
   - [查看keymap](#查看keymap)
   - [Mason](#mason)
   - [shortcuts](#shortcuts)
-  - [self-maintained kickstart.nvim](#self-maintained-kickstartnvim)
+  - [自维护的kickstart.nvim](#自维护的kickstartnvim)
+- [参考](#参考)
 
-## install
+## 安装neovim
 
 ```bash
+# ubuntu
 sudo apt-get install neovim
+
+# macos
+brew install neovim
 ```
 
 ## 配置
 
-### 配置文件
+### 拉取配置仓库
 
 ```bash
-mkdir -p ~/.config/nvim
-
-# https://github.com/nvim-lua/kickstart.nvim/blob/master/init.lua
-edit ~/.config/nvim/init.lua
-
-# should clone whole git repo to ~/.config/nvim
-plugin help renamed to vimdoc
+git clone https://github.com/nvim-lua/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
 ```
+
+### 首次运行安装
+
+```bash
+nvim
+```
+
+### 使用tokyonight黑色主题时的坑
+
+```lua
+-- 编辑~/.config/nvim/init.lua, 在末尾追加配置
+vim.opt.background = "dark"
+```
+
+### github copilot
+
+```lua
+-- 编辑~/.config/nvim/init.lua, 在lazy段中添加配置
+{
+  "zbirenbaum/copilot.lua",
+  cmd = "Copilot",
+  build = ":Copilot auth",
+  event = "BufReadPost",
+  opts = {
+    suggestion = {
+      enabled = not vim.g.ai_cmp,
+      auto_trigger = true,
+      hide_during_completion = vim.g.ai_cmp,
+      keymap = {
+        accept = "<S-TAB>", -- custom keymap to accept suggestion
+        next = "<M-]>",
+        prev = "<M-[>",
+      },
+    },
+    panel = { enabled = false },
+    filetypes = {
+      markdown = true,
+      help = true,
+    },
+  },
+}
+```
+
+## 使用
 
 ### 常用快捷键
 
@@ -64,8 +111,8 @@ plugin help renamed to vimdoc
 | :so                | cmd    | source load-vim-script |
 | :help key-notation | cmd    | view key mapping       |
 
-### self-maintained kickstart.nvim
+## 参考
 
-```bash
-git clone https://github.com/apuppy/kickstart.nvim.git ~/.config/nvim
-```
+- [nvim-lua/kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim?tab=readme-ov-file#FAQ)
+- [LazyVim/LazyVim](https://github.com/LazyVim/LazyVim)
+- [zbirenbaum/copilot.lua](https://github.com/zbirenbaum/copilot.lua)
