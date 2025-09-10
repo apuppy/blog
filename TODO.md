@@ -13,3 +13,4 @@
 
 - [ ] close() in Go (English)
 - [ ] foreach by reference trap in PHP (English)
+- [ ] selenium, playwright, Cypress, puppeteer (English)
