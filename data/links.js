@@ -80,6 +80,18 @@ const links = [
         url: 'https://www.bloomberg.com/',
       },
       {
+        name: 'Japan Today',
+        url: 'https://japantoday.com/',
+      },
+      {
+        name: 'The Japan Times',
+        url: 'https://www.japantimes.co.jp/',
+      },
+      {
+        name: 'NHK World-Japan',
+        url: 'https://www3.nhk.or.jp/nhkworld/en/news/list/',
+      },
+      {
         name: 'HuffPost',
         url: 'https://www.huffpost.com/',
       },
