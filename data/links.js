@@ -48,6 +48,10 @@ const links = [
         url: 'https://www.nytimes.com/',
       },
       {
+        name: 'BBC',
+        url: 'https://www.bbc.com/',
+      },
+      {
         name: 'FT中文网',
         url: 'http://www.ftchinese.com/',
       },
