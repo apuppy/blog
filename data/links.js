@@ -113,7 +113,11 @@ const links = [
     category: 'IT Tech',
     links: [
       {
-        name: 'Hacker news',
+        name: 'TechCrunch',
+        url: 'https://techcrunch.com/',
+      },
+      {
+        name: 'Hacker News',
         url: 'https://news.ycombinator.com/news',
       },
       {
